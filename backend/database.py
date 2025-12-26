@@ -50,5 +50,9 @@ async def update_exercise(id, date, exercise, type, sets, reps, time=0, notes=""
 async def delete_all():
     pass
 
+
 async def fetch_all():
-    pass
+    async with aiosqlite.connect(DB_PATH) as connection:
+        cursor = await connection.execute("""SELECT * FROM exercises""")
+        data = await cursor.fetchall()
+        return data
