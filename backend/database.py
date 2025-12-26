@@ -38,8 +38,14 @@ async def delete_exercise(id):
         await connection.commit()
 
 
-async def update_exercise(id, date, exercise, type, sets, reps, time, notes):
-    pass
+async def update_exercise(id, date, exercise, type, sets, reps, time=0, notes=""):
+    async with aiosqlite.connect(DB_PATH) as connection:
+        update_exercise_query = """UPDATE exercises SET date=?, exercise=?, type=?,
+                                sets=?, reps=?, time=?, notes=?
+                                WHERE id=?"""
+        await connection.execute(update_exercise_query, (date, exercise, type, sets, reps, time, notes, id))
+        await connection.commit()
+
 
 async def delete_all():
     pass
